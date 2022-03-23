@@ -5,22 +5,35 @@
         @click="btnPress({action: ButtonType.ADD})"
     >
       <i class="bx bx-plus"></i>
-      Добавить запись
+      Add entry
+    </vs-button>
+    <vs-button
+        v-if="getCheckedEntries.length > 0"
+        border
+        danger
+        @click="btnPress({action: ButtonType.DELETE_CHECKED})"
+    >
+      <i class="bx bx-trash"></i>
+      Delete checked
     </vs-button>
   </div>
 </template>
 
 <script>
 import ButtonType from '@/types/ButtonType';
+import { mapGetters } from 'vuex';
 
 export default {
   name: 'EntriesListMenu',
 
   computed: {
+    ...mapGetters(['getCheckedEntries']),
+
     ButtonType() {
       return ButtonType;
     },
   },
+
 
   methods: {
     btnPress({ action }) {

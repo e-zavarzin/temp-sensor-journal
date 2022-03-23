@@ -6,9 +6,13 @@
       <template #thead>
         <vs-tr>
           <vs-th>
+            <!-- @change="selected = $vs.checkAll(selected, sensors)" -->
             <vs-checkbox
-                :indeterminate="selected.length === sensors.length" v-model="allCheck"
-                @change="selected = $vs.checkAll(selected, sensors)"
+                :indeterminate="selected.length === getEntriesList.length" v-model="allCheck"
+                @change="changeSelectedItems({
+                  checked: $event.target.checked,
+                  items: getEntriesList,
+                })"
             />
           </vs-th>
           <vs-th>
@@ -24,13 +28,22 @@
       </template>
       <template #tbody>
         <vs-tr
-            v-for="(item, i) in sensors"
+            v-for="(item, i) in getEntriesList"
             :key="i"
             :data="item"
             :is-selected="!!selected.includes(item)"
+            not-click-selected
         >
           <vs-td checkbox>
-            <vs-checkbox :val="item" v-model="selected" />
+            <vs-checkbox
+                :val="item"
+                v-model="selected"
+                @change="changeSelectedItems({
+              checked: $event.target.checked,
+              items: [
+                  item,
+              ]
+            })" />
           </vs-td>
           <vs-td>
             {{ item.id }}
@@ -70,6 +83,8 @@
 </template>
 
 <script>
+import { mapGetters, mapActions } from "vuex";
+
 import ButtonType from '@/types/ButtonType';
 
 export default {
@@ -78,25 +93,50 @@ export default {
   data:() => ({
     allCheck: false,
     selected: [],
-    sensors: [
-      {
-        "id": 1,
-        "temperature": "32",
-      },
-      {
-        "id": 2,
-        "temperature": "44",
-      },
-    ]
   }),
 
+  watch: {
+    getCheckedEntries: function (val) {
+      this.selected = val;
+    },
+  },
+
+  created() {
+    this.getTableData();
+  },
+
   computed: {
+    ...mapGetters(['getEntriesList', 'getCheckedEntries']),
+
+    isSelected(item) {
+      return !!this.selectedItems.includes(item);
+    },
+
+    selectedItems() {
+      console.log(this.getCheckedEntries);
+      return this.getCheckedEntries;
+    },
+
     ButtonType() {
       return ButtonType;
     },
   },
 
   methods: {
+    ...mapActions(['fetchEntriesList', 'addCheckedEntries',  'deleteCheckedEntries']),
+
+    async getTableData() {
+      await this.fetchEntriesList();
+    },
+
+    changeSelectedItems({ checked, items }) {
+      if (checked) {
+        this.addCheckedEntries(items)
+      } else {
+        this.deleteCheckedEntries(items)
+      }
+    },
+
     btnPress({ action, items }) {
       this.$emit('btnPress', { action, items });
     },

@@ -19,6 +19,7 @@ import EntriesList from '@/components/list/EntriesList';
 
 import ButtonType from '@/types/ButtonType';
 import EventBus from '@/event-bus';
+import { mapGetters, mapActions } from 'vuex';
 
 import DeleteEntriesModal from '@/components/modal-windows/DeleteEntriesModal';
 
@@ -29,11 +30,21 @@ export default {
     EntriesListMenu
   },
 
-  data: () => ({
-    active: true,
-  }),
+  created() {
+    EventBus.$on('onDeleteItems', this.handlerDeleteItems);
+  },
+
+  destroyed() {
+    EventBus.$off('onDeleteItems', this.handlerDeleteItems);
+  },
+
+  computed: {
+    ...mapGetters(['getCheckedEntries']),
+  },
 
   methods: {
+    ...mapActions(['deleteCheckedEntries', 'deleteEntriesFromList']),
+
     handleBtnPress({ action, items }) {
       switch (action) {
         case ButtonType.ADD:
@@ -43,10 +54,10 @@ export default {
           this.editEntry(items);
           break;
         case ButtonType.DELETE:
-          this.deleteEntry(items);
+          this.showDeleteEntriesModal(items);
           break;
         case ButtonType.DELETE_CHECKED:
-          console.log(items);
+          this.showDeleteEntriesModal(this.getCheckedEntries);
           break;
         default:
           console.error('UNKNOWN BUTTON TYPE', action)
@@ -59,7 +70,6 @@ export default {
     },
 
     editEntry(items) {
-      console.log(items);
       this.$router.push({
         name: 'EntryFormEdit',
         params: {
@@ -68,7 +78,7 @@ export default {
       })
     },
 
-    deleteEntry(items) {
+    showDeleteEntriesModal(items) {
       EventBus.$emit('onShowModal', {
         component: DeleteEntriesModal,
         data: {
@@ -76,6 +86,11 @@ export default {
         },
       });
     },
+
+    handlerDeleteItems({ items }) {
+      this.deleteCheckedEntries(items);
+      this.deleteEntriesFromList(items);
+    }
   }
 }
 </script>

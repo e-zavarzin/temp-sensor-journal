@@ -1,15 +1,13 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import entriesTableState from './modules/entriesTableState';
+import entriesChecked from './modules/entriesChecked';
 
 Vue.use(Vuex)
 
 export default new Vuex.Store({
-  state: {
-  },
-  mutations: {
-  },
-  actions: {
-  },
   modules: {
+    entriesTableState,
+    entriesChecked
   }
 })
