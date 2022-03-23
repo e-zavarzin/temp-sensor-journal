@@ -1,7 +1,8 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import EntriesList from '../views/EntriesList.vue'
+import EntriesView from '../views/EntriesView.vue'
 import EntryForm from '../views/EntryForm.vue'
+import FormMode from '@/types/FormMode';
 
 Vue.use(VueRouter)
 
@@ -10,23 +11,30 @@ const routes = [
     path: '/',
     name: 'Root',
     redirect: {
-      name: 'EntriesList',
+      name: 'EntriesView',
     },
   },
   {
     path: '/list',
-    name: 'EntriesList',
-    component: EntriesList
+    name: 'EntriesView',
+    component: EntriesView
   },
   {
     path: '/item',
-    name: 'EntryForm',
-    component: EntryForm
+    name: 'EntryFormNew',
+    component: EntryForm,
+    props: () => ({
+      mode: FormMode.NEW,
+    }),
   },
   {
     path: '/item/:id',
-    name: 'EntryForm',
-    component: EntryForm
+    name: 'EntryFormEdit',
+    component: EntryForm,
+    props: (route) => ({
+      mode: FormMode.EDIT,
+      id: route.params.id,
+    }),
   }
 ]
 

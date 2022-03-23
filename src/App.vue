@@ -1,8 +1,16 @@
 <template>
   <div id="app">
     <router-view/>
+    <TheModalKeeper/>
   </div>
 </template>
 
-<style lang="scss">
-</style>
+<script>
+import TheModalKeeper from '@/components/common/TheModalKeeper';
+
+export default {
+  components: {
+    TheModalKeeper
+  },
+}
+</script>
