@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import EntriesView from '../views/EntriesView.vue'
+import EntriesList from '../views/EntriesList.vue'
 import EntryForm from '../views/EntryForm.vue'
 import FormMode from '@/types/FormMode';
 
@@ -11,13 +11,13 @@ const routes = [
     path: '/',
     name: 'Root',
     redirect: {
-      name: 'EntriesView',
+      name: 'EntriesList',
     },
   },
   {
     path: '/list',
-    name: 'EntriesView',
-    component: EntriesView
+    name: 'EntriesList',
+    component: EntriesList
   },
   {
     path: '/item',

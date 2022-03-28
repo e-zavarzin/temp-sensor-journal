@@ -70,7 +70,15 @@ export default {
 
   computed: {
     getTitle() {
-      return `Delete ${this.data.items.length > 1 ? 'entries' : 'entry'}`;
+      return this.data.items.length > 1
+        ? this.$t('modal.title.delete.entries')
+        : this.$t('modal.title.delete.entry')
+    },
+
+    getQuestion() {
+      return this.data.items.length > 1
+          ? this.$t('modal.content.delete.entries')
+          : this.$t('modal.content.delete.entry')
     }
   },
 

@@ -5,7 +5,7 @@
         @click="btnPress({action: ButtonType.ADD})"
     >
       <i class="bx bx-plus"></i>
-      Add entry
+      {{ $t('btn.add.entry') }}
     </vs-button>
     <vs-button
         v-if="getCheckedEntries.length > 0"
