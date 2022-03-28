@@ -44,4 +44,12 @@ const router = new VueRouter({
   routes
 })
 
+// this fixes the bug with button tooltip that remains after changing layout
+router.afterEach(() => {
+  const Stickedtooltips = document.querySelectorAll(".vs-tooltip");
+  for (const tooltip of Stickedtooltips) {
+    tooltip.remove();
+  }
+});
+
 export default router

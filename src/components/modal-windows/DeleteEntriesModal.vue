@@ -6,46 +6,47 @@
       </h4>
     </template>
     <div class="con-content">
-      Are you sure you want to delete following entries?
-      <div>
-        <vs-table>
-          <template #thead>
-            <vs-tr>
-              <vs-th>
-                ID
-              </vs-th>
-              <vs-th>
-                Temperature
-              </vs-th>
-            </vs-tr>
-          </template>
-          <template #tbody>
-            <vs-tr
-                :key="i"
-                v-for="(tr, i) in data.items"
-                :data="tr"
-            >
-              <vs-td>
-                {{ tr.id }}
-              </vs-td>
-              <vs-td>
-                {{ tr.temperature }}
-              </vs-td>
-            </vs-tr>
-          </template>
-        </vs-table>
-      </div>
+      {{ getQuestion }}
+      <vs-table
+          striped
+          class="mt-1"
+      >
+        <template #thead>
+          <vs-tr>
+            <vs-th>
+              {{ $t('table.header.entry.id') }}
+            </vs-th>
+            <vs-th>
+              {{ $t('table.header.entry.temperature') }}
+            </vs-th>
+          </vs-tr>
+        </template>
+        <template #tbody>
+          <vs-tr
+              :key="i"
+              v-for="(tr, i) in data.items"
+              :data="tr"
+          >
+            <vs-td>
+              {{ tr.id }}
+            </vs-td>
+            <vs-td>
+              {{ tr.temperature || '-' }}
+            </vs-td>
+          </vs-tr>
+        </template>
+      </vs-table>
     </div>
 
     <template #footer>
-      <div class="con-footer">
-        <vs-button @click="apply()" transparent>
-          Ok
+      <vs-row justify="flex-end">
+        <vs-button flat @click="apply()">
+          {{ $t('btn.ok') }}
         </vs-button>
-        <vs-button @click="close()" dark transparent>
-          Cancel
+        <vs-button flat @click="close()" dark>
+          {{ $t('btn.cancel') }}
         </vs-button>
-      </div>
+      </vs-row>
     </template>
   </vs-dialog>
 </template>
@@ -75,7 +76,7 @@ export default {
 
   methods: {
     apply() {
-      EventBus.$emit('onDeleteItems', {
+      EventBus.$emit('onDeleteEntries', {
         items: this.data.items
       });
       this.close();

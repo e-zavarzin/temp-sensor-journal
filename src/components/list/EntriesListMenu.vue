@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <vs-row>
     <vs-button
         flat
         @click="btnPress({action: ButtonType.ADD})"
@@ -14,9 +14,9 @@
         @click="btnPress({action: ButtonType.DELETE_CHECKED})"
     >
       <i class="bx bx-trash"></i>
-      Delete checked
+        {{ $t('btn.delete.checked') }}
     </vs-button>
-  </div>
+  </vs-row>
 </template>
 
 <script>

@@ -1,6 +1,6 @@
 const FormMode = {
-    NEW: 'new',
-    EDIT: 'edit',
+    NEW: 'NEW',
+    EDIT: 'EDIT',
 };
 
 export default FormMode;
